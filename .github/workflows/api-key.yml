@@ -8,4 +8,3 @@ jobs:
       - name: Get registration key
         env: 
           API_KEY: ${{ secrets.API_KEY }}
-        run: ${{ job.status }}
