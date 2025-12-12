@@ -1,8 +1,6 @@
 import pandas as pd
 import json
-#import plotly.express as px
 import requests
-#import streamlit as st
 from datetime import datetime
 
 '''Ensure a rolling 12 mo of data is available.'''
@@ -45,6 +43,7 @@ x = []
 for series in json_data['Results']['series']:
     seriesId = series['seriesID']
     
+    # Iterate through 'data' dictionary and store values.
     for item in series['data']:
         year = item['year']
         period = item['period']
@@ -60,6 +59,7 @@ for series in json_data['Results']['series']:
 
         # This grabs all 12 months (if available) of data for each year.
         if 'M01' <= period <= 'M12':
+            # Add values to list x_row.
             x_row = [seriesId, year, period, month, value, footnotes[0:-1]]
 
             # Iterate through net and pct changes dictionary to grab values and append.
@@ -68,12 +68,13 @@ for series in json_data['Results']['series']:
             for mochange, val in pct_changes.items():
                 x_row.append(val)
             
+            # Add values to list x.
             x.append(x_row)
-            
+
 # Convert list to dataframe for easier analysis.
 x = pd.DataFrame(x)
 
 # Rename columns.
 alldat = x.rename(columns={0:'seriesID', 1:'year', 2:'period', 3:'month', 4:'value', 5:'footnotes', 6:'netchg_1mo', 7:'netchg_3mo', 8:'netchg_6mo', 9:'netchg_12mo', 10:'pctchg_1mo', 11:'pctchg_3mo', 12:'pctchg_6mo', 13:'pctchg_12mo'})
 
-print(alldat)
+alldat.to_csv('bls_data.csv')
