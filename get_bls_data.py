@@ -77,4 +77,31 @@ x = pd.DataFrame(x)
 # Rename columns.
 alldat = x.rename(columns={0:'seriesID', 1:'year', 2:'period', 3:'month', 4:'value', 5:'footnotes', 6:'netchg_1mo', 7:'netchg_3mo', 8:'netchg_6mo', 9:'netchg_12mo', 10:'pctchg_1mo', 11:'pctchg_3mo', 12:'pctchg_6mo', 13:'pctchg_12mo'})
 
+''' Clean data and prep for analysis for dashboard! '''
+# Create a new column time_period for filtering purposes.
+alldat['time_period'] = alldat[['month', 'year']].apply(lambda x: ', '.join(x.astype(str).values), axis=1)
+# Convert back to a date format.
+alldat['time_period'] = pd.to_datetime(alldat['time_period'], format = '%B, %Y')
+
+# Create function to pair the seriesIDs with their names.
+def sname(row):
+    if row['seriesID'] == 'CES0000000001':
+        val = 'All Employees'
+    elif row['seriesID'] == 'LNS14000000':
+        val = 'Unemployment Rate'
+    elif row['seriesID'] == 'JTS000000000000000JOR':
+        val = 'Job Openings and Labor Turnover Rate'
+    elif row['seriesID'] == 'JTS000000000000000HIR':
+        val = 'Hires Rate'
+    elif row['seriesID'] == 'JTS000000000000000QUR':
+        val = 'Quits Rate'
+    else:
+        val = 'Layoffs and Discharges Rate'
+    
+    return val
+
+# Create a new column series_name using the above funtion.
+alldat['series_name'] = alldat.apply(sname, axis=1)
+
+# Save the data to a csv file.
 alldat.to_csv('bls_data.csv')
