@@ -17,7 +17,7 @@ map_data = pd.read_csv('./data/bls_state_emp_data.csv', index_col = 0)
 
 # Create sidebar to display the filters.
 with st.sidebar.form('filter_form'):
-    st.header('Select filters, then click "Apply"')
+    st.header('Select filters, then click "Apply". Refresh to reset the filters.')
 
     # Allow change to value displayed.
     displayvar = ['value', 'netchg_1mo', 'netchg_3mo', 'netchg_6mo', 'netchg_12mo', 'pctchg_1mo', 'pctchg_3mo', 'pctchg_6mo', 'pctchg_12mo']
@@ -68,11 +68,11 @@ recentLDR = selectedmo.loc[(selectedmo['seriesID'] == 'JTS000000000000000LDR')]
 ## If variable selected is value display the deltas. 
 if filter_var == 'value':
     s1.metric('All Non-Farm Employees', recentNFE['value'], delta=recentNFE.iloc[0]['netchg_1mo'])
-    s2.metric('Unemployment Rate', recentUR['value'], delta=recentUR.iloc[0]['pctchg_1mo'])
+    s2.metric('Unemployment Rate', recentUR['value'], delta=recentUR.iloc[0]['pctchg_1mo'], delta_color='inverse')
     s3.metric('Job Openings and Labor Turnover Rate', recentJO['value'], delta=recentJO.iloc[0]['pctchg_1mo'])
     s4.metric('Hires Rate', recentHR['value'], delta=recentHR.iloc[0]['pctchg_1mo'])
-    s5.metric('Quits Rate', recentQR['value'], delta=recentQR.iloc[0]['pctchg_1mo'])
-    s6.metric('Layoffs And Discharges Rate', recentLDR['value'], delta=recentLDR.iloc[0]['pctchg_1mo'])
+    s5.metric('Quits Rate', recentQR['value'], delta=recentQR.iloc[0]['pctchg_1mo'],delta_color='inverse')
+    s6.metric('Layoffs And Discharges Rate', recentLDR['value'], delta=recentLDR.iloc[0]['pctchg_1mo'], delta_color='inverse')
 
 else:
     s1.metric('All Non-Farm Employees', recentNFE[filter_var])
@@ -102,18 +102,33 @@ with t1:
         emp, rate = st.columns(2)
 
         # Display All Employees Data.
-        emp.line_chart(nfemp, x='time_period', y=filter_var, color='series_name')
+        allemp = px.line(nfemp, x='time_period', y=filter_var, color='series_name')
+        ## Show legend on bottom of graph.
+        allemp.update_layout(legend=dict(orientation='h'))
+        ## Show plot.
+        emp.plotly_chart(allemp)
         
         # Display dataframe data.
         emp.dataframe(nfemp)
         
         # Display all other data (Rate/%)
-        rate.line_chart(rates, x='time_period', y=filter_var, color='series_name')
+        rates_chart = px.line(rates, x='time_period', y=filter_var, color='series_name')
+        ## Show legend on bottom of graph.
+        rates_chart.update_layout(legend=dict(orientation='h'))
+        ## Show plot.
+        rate.plotly_chart(rates_chart)
         
         # Display dataframe data.
         rate.dataframe(rates)
     else:
-        st.line_chart(series_filtered, x='time_period', y=filter_var, color='series_name')
+        # When data doesn't include all employees, display only one chart in the tab.
+        dat_chart = px.line(series_filtered, x='time_period', y=filter_var, color='series_name')
+        ## Show legend on bottom of graph.
+        dat_chart.update_layout(legend=dict(orientation='h'))
+        ## Show plot.
+        st.plotly_chart(dat_chart)
+        
+        # Display dataframe of data.
         st.dataframe(series_filtered)
 
 
