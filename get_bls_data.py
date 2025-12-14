@@ -104,4 +104,4 @@ def sname(row):
 alldat['series_name'] = alldat.apply(sname, axis=1)
 
 # Save the data to a csv file.
-alldat.to_csv('bls_data.csv')
+alldat.to_csv('./data/bls_data.csv')

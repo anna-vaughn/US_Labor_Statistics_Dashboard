@@ -149,8 +149,6 @@ def sname(row):
         val = 'CT'
     elif row['seriesID'] == 'SMS10000000000000001': 
         val = 'DE'
-    elif row['seriesID'] == 'SMS11000000000000001': 
-        val = 'DC'
     elif row['seriesID'] == 'SMS12000000000000001': 
         val = 'FL'
     elif row['seriesID'] == 'SMS13000000000000001': 
@@ -242,4 +240,4 @@ def sname(row):
 alldat['series_name'] = alldat.apply(sname, axis=1)
 
 # Save the data to a csv file.
-alldat.to_csv('bls_all_emp_data.csv')
+alldat.to_csv('./data/bls_state_emp_data.csv')
