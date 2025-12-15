@@ -3,7 +3,7 @@ name: Weekly BLS Data Update
 on:
   schedule:
     # Every Wednesday at midnight (UTC).
-    - cron: '0 0 0 * * 3'
+    - cron: '0 0 * * 3'
   # Allow manual runs for testing.
   workflow_dispatch:
 
