@@ -18,8 +18,8 @@ rollingdate = currdate - pd.DateOffset(months=12)
 rollingmo = rollingdate.strftime("%B")
 
 # Call API Registration Key to use version 2.0.
-with open('API_KEY.txt', 'r') as file:
-    api_key = file.read().strip()
+'''with open('API_KEY.txt', 'r') as file:
+    api_key = file.read().strip()'''
 
 ''' 
 With mapping data (state/area codes):
@@ -80,7 +80,7 @@ map_data = json.dumps({"seriesid": ['SMS01000000000000001',
                                 'SMS54000000000000001',
                                 'SMS55000000000000001',
                                 'SMS56000000000000001'], 
-                    "startyear":prevyear, "endyear":curryear, "calculations":"true", "annualaverage":"true", "registrationkey":api_key})
+                    "startyear":prevyear, "endyear":curryear, "calculations":"true", "annualaverage":"true", "registrationkey":"87f56f60043c438aa77ba98b3ddf851f"})
 m_p = requests.post('https://api.bls.gov/publicAPI/v2/timeseries/data/', data=map_data, headers=headers)
 m_json_data = json.loads(m_p.text)
 

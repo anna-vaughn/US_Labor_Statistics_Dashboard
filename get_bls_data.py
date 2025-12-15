@@ -18,8 +18,8 @@ rollingdate = currdate - pd.DateOffset(months=12)
 rollingmo = rollingdate.strftime("%B")
 
 # Call API Registration Key to use version 2.0.
-with open('API_KEY.txt', 'r') as file:
-    api_key = file.read().strip()
+'''with open('API_KEY.txt', 'r') as file:
+    api_key = file.read().strip()'''
 
 # Code below is based off of https://www.bls.gov/developers/api_python.htm#python2 with modifications.
 ''' 
@@ -32,7 +32,7 @@ JTS000000000000000LDR = Layoffs and discharges rate
 * All series seasonally adjusted *
 '''
 headers = {'Content-type': 'application/json'}
-data = json.dumps({"seriesid": ['CES0000000001','LNS14000000', 'JTS000000000000000JOR', 'JTS000000000000000HIR', 'JTS000000000000000QUR', 'JTS000000000000000LDR'], "startyear":prevyear, "endyear":curryear, "calculations":"true", "annualaverage":"true", "registrationkey":api_key})
+data = json.dumps({"seriesid": ['CES0000000001','LNS14000000', 'JTS000000000000000JOR', 'JTS000000000000000HIR', 'JTS000000000000000QUR', 'JTS000000000000000LDR'], "startyear":prevyear, "endyear":curryear, "calculations":"true", "annualaverage":"true", "registrationkey":"87f56f60043c438aa77ba98b3ddf851f"})
 p = requests.post('https://api.bls.gov/publicAPI/v2/timeseries/data/', data=data, headers=headers)
 json_data = json.loads(p.text)
 
