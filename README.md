@@ -1,26 +1,22 @@
 # US_Labor_Statistics_Dashboard
 ECON 8320 Semester Project
 
-Since two of the requirements include the total number of 
-non-farm workers (series CES0000000001) and unemployment rates (series 
-LNS14000000) I am planning on creating a dashboard focusing on the relationship 
-between employment and the job market. I will do this by comparing the job openings rate 
-(series JTS000000000000000JOR), hires rate (series JTS000000000000000HIR), quits rate 
-(series JTS000000000000000QUR), and layoffs and discharges rate (series 
-JTS000000000000000LDR) with unemployment rates. All of the data chosen will be the 
-seasonally adjusted series to match the total number of non-farm workers and 
-unemployment rates. I would like to create a dashboard that will explore the relationships 
-between these variables using different visualizations and see what patterns exist, and the 
-overall impact these rates have on the job market if any. I am planning to utilize a line chart 
-to easily display information for comparison over time and I am also planning on showing 
-the information on a map of the United States for comparison state-by-state. 
-The dashboard will display all of the collected series data for the current month as the 
-default, along the top of the page. The line graph and map visualizations will take up the 
-majority of the dashboard and be displayed beneath the month overview data points. I am 
-planning on making the dashboard interactive, so the viewer will have the ability to change 
-which month is displayed. Additionally, the viewer can select which variables to display 
-and filter on different months for comparison in the line and map visualizations. Both 
-visualizations will be changed in tandem based on the viewer’s selections. When the 
-viewer hovers or clicks on parts of the visualization the data points will be displayed. I also 
-plan on allowing the viewer the ability to download the underlying visualization data based 
-on their selections.
+This project uses Python to get data from the BLS Public Data API (specifically v2.0, please don't use my API key for malicious reasons!) and creates a Streamlit dashboard with visualizations that give insight into the current job market.
+
+## How it's made
+This was made with 7 series. The first 6 were straightforward API calls. I used the API v2.0 to get the net and percent changes MoM, which were helpful in visualizing the changes in data. 
+CES0000000001         = Non-farm workers
+LNS14000000           = Unemployment rates
+JTS000000000000000JOR = Job openings rate
+JTS000000000000000HIR = Hires rate
+JTS000000000000000QUR = Quits rate
+JTS000000000000000LDR = Layoffs and discharges rate
+
+The last series was more difficult to obtain. I had wanted to create a map of the U.S. for all of the above series', however after looking through BLS's Series ID Formats (https://www.bls.gov/help/hlpforma.htm) and finding the assiciated Series IDs not all of them had data for all 50 states. Although I was dissapointed, I was able to get data for all 50 states for the number of employees by state. The series format I used here was - 
+SMS01000000000000001
+- where I changed the 4th and 5th position to the specific state code I wanted to get (x 49!).
+
+## View my dashboard!
+Link to my dashboard: https://uslaborstatisticsdashboard-waupbpr2urzp6cdnzemb65.streamlit.app/
+
+Read more about the BLS Public Data API here: https://www.bls.gov/developers/home.htm
