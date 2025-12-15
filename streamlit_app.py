@@ -24,7 +24,7 @@ with st.sidebar.form('filter_form'):
     filter_var = st.pills('Select Variable To Display In Dashboard', displayvar, selection_mode='single', default='value')
     
     # Allow selection on a monthly basis for metrics.
-    filter_mo = st.selectbox('Select Month To Display Metrics', data['time_period'])
+    filter_mo = st.selectbox('Select Month To Display In Metrics', data['time_period'])
 
     # Allow filtering on series.
     series = data['series_name'].unique().tolist()
@@ -40,7 +40,7 @@ with st.sidebar.form('filter_form'):
     filter_time = st.slider('Select Timeframe For Line Chart(s)', min_value=mintime, max_value=maxtime, value=(rolling12mo, maxtime), format='YYYY-MM')
 
     # Allow selection on a monthly basis for the map.
-    filter_mo_map = st.selectbox('Select Month To Display Metrics', map_data['time_period'])
+    filter_mo_map = st.selectbox('Select Month To Display In Map', map_data['time_period'])
 
     submit = st.form_submit_button('Apply')
 
