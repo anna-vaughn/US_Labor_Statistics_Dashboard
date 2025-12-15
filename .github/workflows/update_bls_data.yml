@@ -1,0 +1,48 @@
+name: Weekly BLS Data Update
+
+on:
+  schedule:
+    # Every Wednesday at midnight (UTC).
+    - cron: '0 0 * * 3'
+  # Allow manual runs for testing.
+  workflow_dispatch:
+
+jobs:
+  update-bls:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out repo in case new data was released.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Detects file changes.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run get_bls_data.py
+        run: python get_bls_data.py
+
+      - name: Run get_bls_state_emp_data.py
+        run: python get_bls_state_emp_data.py
+
+      - name: Commit and push changes if any
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add .
+            git commit -m "Automated BLS data update"
+            git push
+          else
+            echo "No changes to commit"
+          fi
